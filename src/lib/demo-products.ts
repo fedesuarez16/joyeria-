@@ -1,0 +1,125 @@
+import type { Category, ProductWithRelations } from "@/lib/queries";
+
+/**
+ * Datos de ejemplo para mostrar el catálogo mientras no haya productos
+ * cargados en la base. Se reemplazan solos apenas el admin cree productos.
+ */
+
+const now = "2026-01-01T00:00:00Z";
+
+function category(id: string, name: string, slug: string, position: number): Category {
+  return { id, name, slug, position, created_at: now };
+}
+
+export const demoCategories: Category[] = [
+  category("demo-cat-anillos", "Anillos", "anillos", 1),
+  category("demo-cat-collares", "Collares", "collares", 2),
+  category("demo-cat-pulseras", "Pulseras", "pulseras", 3),
+  category("demo-cat-aros", "Aros", "aros", 4),
+];
+
+function product(opts: {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  category: Category;
+  image: string;
+  description: string;
+}): ProductWithRelations {
+  return {
+    id: opts.id,
+    name: opts.name,
+    slug: opts.slug,
+    description: opts.description,
+    price: opts.price,
+    stock: 10,
+    low_stock_threshold: 3,
+    active: true,
+    category_id: opts.category.id,
+    created_at: now,
+    updated_at: now,
+    categories: opts.category,
+    product_images: [
+      { id: `${opts.id}-img`, product_id: opts.id, url: opts.image, position: 0, created_at: now },
+    ],
+    product_variants: [],
+  };
+}
+
+const [anillos, collares, pulseras, aros] = demoCategories;
+
+export const demoProducts: ProductWithRelations[] = [
+  product({
+    id: "demo-1",
+    name: "Anillo Solitario Aurora",
+    slug: "anillo-solitario-aurora",
+    price: 28999,
+    category: anillos,
+    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
+    description: "Anillo solitario con piedra central de zirconia y baño de oro 18k.",
+  }),
+  product({
+    id: "demo-2",
+    name: "Anillo Eterno Dorado",
+    slug: "anillo-eterno-dorado",
+    price: 21499,
+    category: anillos,
+    image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&q=80",
+    description: "Dúo de anillos con terminación pulida espejo y baño de oro.",
+  }),
+  product({
+    id: "demo-3",
+    name: "Collar Gota de Luz",
+    slug: "collar-gota-de-luz",
+    price: 32999,
+    category: collares,
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
+    description: "Collar con dije de cristal facetado y cadena fina bañada en oro.",
+  }),
+  product({
+    id: "demo-4",
+    name: "Cadena Veneciana Oro",
+    slug: "cadena-veneciana-oro",
+    price: 26499,
+    category: collares,
+    image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+    description: "Cadena veneciana clásica, hipoalergénica, ideal para uso diario.",
+  }),
+  product({
+    id: "demo-5",
+    name: "Pulsera Perla Nocturna",
+    slug: "pulsera-perla-nocturna",
+    price: 18999,
+    category: pulseras,
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&q=80",
+    description: "Pulsera con perlas de río y detalles dorados.",
+  }),
+  product({
+    id: "demo-6",
+    name: "Pulsera Trenza Dorada",
+    slug: "pulsera-trenza-dorada",
+    price: 15999,
+    category: pulseras,
+    image: "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=800&q=80",
+    description: "Set de pulseras trenzadas con baño de oro y cierre regulable.",
+  }),
+  product({
+    id: "demo-7",
+    name: "Aros Argolla Clásica",
+    slug: "aros-argolla-clasica",
+    price: 12999,
+    category: aros,
+    image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&q=80",
+    description: "Argollas doradas livianas, el básico que nunca falla.",
+  }),
+  product({
+    id: "demo-8",
+    name: "Aros Perla Imperial",
+    slug: "aros-perla-imperial",
+    price: 16499,
+    category: aros,
+    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80",
+    description: "Aros con perla natural y engarce dorado, elegancia atemporal.",
+  }),
+];
