@@ -12,10 +12,25 @@ function category(id: string, name: string, slug: string, position: number): Cat
 }
 
 export const demoCategories: Category[] = [
-  category("demo-cat-anillos", "Anillos", "anillos", 1),
-  category("demo-cat-collares", "Collares", "collares", 2),
-  category("demo-cat-pulseras", "Pulseras", "pulseras", 3),
-  category("demo-cat-aros", "Aros", "aros", 4),
+  category("demo-cat-plata-925", "Plata 925", "plata-925", 1),
+  category("demo-cat-acero-blanco", "Acero Blanco", "acero-blanco", 2),
+  category("demo-cat-acero-dorado", "Acero Dorado", "acero-dorado", 3),
+  category("demo-cat-acero-quirurgico", "Acero Quirúrgico", "acero-quirurgico", 4),
+  category("demo-cat-varios", "Varios", "varios", 5),
+  category("demo-cat-relojes", "Relojes", "relojes", 6),
+  category("demo-cat-bolsos", "Bolsos", "bolsos", 7),
+  category("demo-cat-perfumes", "Perfumes", "perfumes", 8),
+  category("demo-cat-gafas-lentes", "Gafas o Lentes", "gafas-lentes", 9),
+  category("demo-cat-abridores", "Abridores", "abridores", 10),
+  category("demo-cat-anillos", "Anillos", "anillos", 11),
+  category("demo-cat-aros", "Aros", "aros", 12),
+  category("demo-cat-cadenas", "Cadenas", "cadenas", 13),
+  category("demo-cat-collares", "Collares", "collares", 14),
+  category("demo-cat-conjuntos", "Conjuntos", "conjuntos", 15),
+  category("demo-cat-dijes", "Dijes", "dijes", 16),
+  category("demo-cat-pulseras", "Pulseras", "pulseras", 17),
+  category("demo-cat-tobilleras", "Tobilleras", "tobilleras", 18),
+  category("demo-cat-esclavas", "Esclavas", "esclavas", 19),
 ];
 
 function product(opts: {
@@ -47,7 +62,11 @@ function product(opts: {
   };
 }
 
-const [anillos, collares, pulseras, aros] = demoCategories;
+const bySlug = (slug: string) => demoCategories.find((c) => c.slug === slug)!;
+const anillos = bySlug("anillos");
+const collares = bySlug("collares");
+const pulseras = bySlug("pulseras");
+const aros = bySlug("aros");
 
 export const demoProducts: ProductWithRelations[] = [
   product({

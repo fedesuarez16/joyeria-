@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import { CartBadge } from "@/components/cart-badge";
@@ -7,8 +7,13 @@ import { HeaderAuth } from "@/components/header-auth";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
+const jost = Jost({ variable: "--font-jost", subsets: ["latin"] });
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
 
 const siteName = "Maina";
 
@@ -22,7 +27,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable} h-full antialiased`}>
+    <html lang="es" className={`${jost.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="font-sans min-h-full flex flex-col">
         <header className="sticky top-0 z-40 border-b border-gold/30 bg-ink/95 text-white backdrop-blur">
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">

@@ -16,7 +16,7 @@ const slides = [
       <>
         Detalles que brillan,
         <br />
-        <span className="text-gold">belleza que te define.</span>
+        <span className="italic text-gold">belleza que te define.</span>
       </>
     ),
     body: "Anillos, collares, pulseras y aros elegidos pieza por pieza.",
@@ -29,7 +29,7 @@ const slides = [
       <>
         Registrate y llevate
         <br />
-        <span className="text-gold">10% en tu primera compra.</span>
+        <span className="italic text-gold">10% en tu primera compra.</span>
       </>
     ),
     body: "Creá tu cuenta gratis, seguí tus pedidos y accedé a beneficios exclusivos.",
@@ -42,7 +42,7 @@ const slides = [
       <>
         Enterate antes que nadie
         <br />
-        <span className="text-gold">de cada nuevo brillo.</span>
+        <span className="italic text-gold">de cada nuevo brillo.</span>
       </>
     ),
     body: "Dejanos tu mail y recibí promociones y nuevos ingresos.",
@@ -91,14 +91,26 @@ export function HeroCarousel() {
             fill
             priority={i === 0}
             sizes="100vw"
-            className="object-cover"
+            className={`object-cover ${i === active ? "hero-kenburns" : ""}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
-          <div className="relative mx-auto flex h-full w-full max-w-6xl flex-col items-center justify-center px-4 text-center">
-            <p className="text-xs uppercase tracking-[0.35em] text-gold">{s.eyebrow}</p>
-            <h2 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{s.title}</h2>
-            <p className="mt-4 max-w-md text-neutral-300">{s.body}</p>
-            <div className="mt-8">
+          <div
+            className={`relative mx-auto flex h-full w-full max-w-6xl flex-col items-center justify-center px-4 text-center ${
+              i === active ? "hero-copy-active" : ""
+            }`}
+          >
+            <p className="hero-line flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-gold">
+              <span className="h-px w-8 bg-gold/60" aria-hidden />
+              {s.eyebrow}
+              <span className="h-px w-8 bg-gold/60" aria-hidden />
+            </p>
+            <h2 className="hero-line mt-5 font-display text-5xl font-medium leading-[1.05] sm:text-6xl">
+              {s.title}
+            </h2>
+            <p className="hero-line mt-5 max-w-md font-sans text-sm uppercase tracking-[0.15em] text-neutral-300">
+              {s.body}
+            </p>
+            <div className="hero-line mt-8">
               {i === 0 && (
                 <a
                   href="#catalogo"

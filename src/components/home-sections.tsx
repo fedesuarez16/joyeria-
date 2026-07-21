@@ -1,19 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Reveal } from "@/components/reveal";
 
 /** Banda de cita sobre fondo negro, separa el catálogo del resto del home. */
 export function QuoteBand() {
   return (
     <section className="bg-ink px-4 py-16 text-center text-white sm:py-20">
-      <p className="mx-auto max-w-2xl font-display text-2xl leading-snug sm:text-3xl">
-        Hay piezas que se compran
-        <br />
-        <span className="text-gold">y piezas que te eligen.</span>
-      </p>
-      <div className="mx-auto mt-6 h-px w-16 bg-gold/60" aria-hidden />
-      <p className="mt-6 text-sm uppercase tracking-[0.3em] text-neutral-400">
-        Cuando la encuentres, lo vas a saber
-      </p>
+      <Reveal>
+        <p className="mx-auto max-w-2xl font-display text-3xl font-medium leading-snug sm:text-4xl">
+          Hay piezas que se compran
+          <br />
+          <span className="italic text-gold">y piezas que te eligen.</span>
+        </p>
+        <div className="gold-shimmer mx-auto mt-6 h-px w-16" aria-hidden />
+        <p className="mt-6 font-sans text-sm uppercase tracking-[0.3em] text-neutral-400">
+          Cuando la encuentres, lo vas a saber
+        </p>
+      </Reveal>
     </section>
   );
 }
@@ -45,15 +48,18 @@ export function BrandPromises() {
   return (
     <section className="bg-neutral-100 px-4 py-14 sm:py-16">
       <div className="mx-auto max-w-6xl">
-        <p className="text-center text-xs uppercase tracking-[0.35em] text-accent">
-          Nuestra promesa
-        </p>
+        <Reveal>
+          <p className="text-center font-sans text-xs uppercase tracking-[0.35em] text-accent">
+            Nuestra promesa
+          </p>
+          <h2 className="mt-3 text-center font-display text-3xl font-medium sm:text-4xl">
+            Pensado para <span className="italic text-accent">vos</span>
+          </h2>
+        </Reveal>
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
-          {promises.map((p) => (
-            <div
-              key={p.title}
-              className="rounded-xl border-t-2 border-gold bg-white p-6 shadow-sm"
-            >
+          {promises.map((p, i) => (
+            <Reveal key={p.title} delay={i * 0.12}>
+              <div className="h-full rounded-xl border-t-2 border-gold bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
               <svg
                 width="28"
                 height="28"
@@ -68,9 +74,10 @@ export function BrandPromises() {
               >
                 {p.icon}
               </svg>
-              <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+              <h3 className="mt-4 font-display text-xl font-semibold">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-600">{p.text}</p>
-            </div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -83,20 +90,22 @@ export function JoinClub() {
   return (
     <section className="bg-ink text-white">
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-14 sm:py-20 md:grid-cols-2">
-        <div className="relative order-last mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl border border-gold/20 md:order-first">
-          <Image
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=900&q=80"
-            alt="Anillo solitario sobre fondo oscuro"
-            fill
-            sizes="(max-width: 768px) 90vw, 45vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="text-center md:text-left">
-          <p className="text-xs uppercase tracking-[0.35em] text-gold">Club Maina</p>
-          <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl">
+        <Reveal className="order-last mx-auto w-full max-w-md md:order-first">
+          <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gold/20">
+            <Image
+              src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=900&q=80"
+              alt="Anillo solitario sobre fondo oscuro"
+              fill
+              sizes="(max-width: 768px) 90vw, 45vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
+        </Reveal>
+        <Reveal delay={0.15} className="text-center md:text-left">
+          <p className="font-sans text-xs uppercase tracking-[0.35em] text-gold">Club Maina</p>
+          <h2 className="mt-4 font-display text-4xl font-medium leading-tight sm:text-5xl">
             Creá tu cuenta y obtené{" "}
-            <span className="text-gold">10% en tu primera compra</span>
+            <span className="italic text-gold">10% en tu primera compra</span>
           </h2>
           <p className="mx-auto mt-4 max-w-md text-neutral-400 md:mx-0">
             Enterate antes que nadie de los nuevos ingresos, seguí tus pedidos y
@@ -104,11 +113,11 @@ export function JoinClub() {
           </p>
           <Link
             href="/registro"
-            className="mt-8 inline-block rounded-full border border-gold px-8 py-3 text-sm font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold hover:text-ink"
+            className="mt-8 inline-block rounded-full border border-gold px-8 py-3 font-sans text-sm font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold hover:text-ink"
           >
             Sumarme al club
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

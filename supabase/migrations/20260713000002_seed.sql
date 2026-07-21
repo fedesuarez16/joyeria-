@@ -1,9 +1,24 @@
 -- Seed inicial: categorías y productos de ejemplo
 insert into public.categories (name, slug, position) values
-  ('Anillos', 'anillos', 1),
-  ('Collares', 'collares', 2),
-  ('Pulseras', 'pulseras', 3),
-  ('Aros', 'aros', 4);
+  ('Plata 925', 'plata-925', 1),
+  ('Acero Blanco', 'acero-blanco', 2),
+  ('Acero Dorado', 'acero-dorado', 3),
+  ('Acero Quirúrgico', 'acero-quirurgico', 4),
+  ('Varios', 'varios', 5),
+  ('Relojes', 'relojes', 6),
+  ('Bolsos', 'bolsos', 7),
+  ('Perfumes', 'perfumes', 8),
+  ('Gafas o Lentes', 'gafas-lentes', 9),
+  ('Abridores', 'abridores', 10),
+  ('Anillos', 'anillos', 11),
+  ('Aros', 'aros', 12),
+  ('Cadenas', 'cadenas', 13),
+  ('Collares', 'collares', 14),
+  ('Conjuntos', 'conjuntos', 15),
+  ('Dijes', 'dijes', 16),
+  ('Pulseras', 'pulseras', 17),
+  ('Tobilleras', 'tobilleras', 18),
+  ('Esclavas', 'esclavas', 19);
 
 with cat as (select id, slug from public.categories)
 insert into public.products (category_id, name, slug, description, price, stock, low_stock_threshold)

@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product-card";
 import { SearchBar } from "@/components/search-bar";
 import { QuoteBand, BrandPromises, JoinClub } from "@/components/home-sections";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { Reveal } from "@/components/reveal";
 
 export default async function CatalogPage({
   searchParams,
@@ -38,8 +39,15 @@ export default async function CatalogPage({
       <HeroCarousel />
 
       <section id="catalogo" className="mx-auto w-full max-w-6xl scroll-mt-20 px-4 py-10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-display text-3xl font-semibold">Catálogo</h2>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-sans text-xs uppercase tracking-[0.35em] text-accent">
+              Nuestra colección
+            </p>
+            <h2 className="mt-2 font-display text-4xl font-medium">
+              El <span className="italic text-accent">catálogo</span>
+            </h2>
+          </div>
           <Suspense>
             <SearchBar />
           </Suspense>
@@ -69,8 +77,10 @@ export default async function CatalogPage({
           </p>
         ) : (
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {products.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 4) * 0.08}>
+                <ProductCard product={p} />
+              </Reveal>
             ))}
           </div>
         )}
