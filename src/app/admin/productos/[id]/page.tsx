@@ -14,7 +14,9 @@ export default async function EditProductPage({
     getCategories(),
     supabase
       .from("products")
-      .select("*, categories(*), product_images(*), product_variants(*)")
+      .select(
+        "*, categories:categories!products_category_id_fkey(*), subcategory:categories!products_subcategory_id_fkey(*), product_images(*), product_variants(*)"
+      )
       .eq("id", id)
       .single(),
   ]);

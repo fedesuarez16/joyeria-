@@ -3,12 +3,15 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/format";
 import { ToggleActiveButton } from "@/components/admin/toggle-active-button";
+import { DeleteProductButton } from "@/components/admin/delete-product-button";
 
 export default async function AdminProductsPage() {
   const supabase = await createClient();
   const { data: products } = await supabase
     .from("products")
-    .select("*, categories(name), product_images(url, position), product_variants(stock)")
+    .select(
+      "*, categories:categories!products_category_id_fkey(name), subcategory:categories!products_subcategory_id_fkey(name), product_images(url, position), product_variants(stock)"
+    )
     .order("created_at", { ascending: false });
 
   return (
@@ -29,6 +32,7 @@ export default async function AdminProductsPage() {
             <tr className="border-b border-stone-200 text-left text-xs uppercase tracking-wide text-stone-400">
               <th className="px-4 py-3">Producto</th>
               <th className="px-4 py-3">Categoría</th>
+              <th className="px-4 py-3">Subcategoría</th>
               <th className="px-4 py-3">Precio</th>
               <th className="px-4 py-3">Stock</th>
               <th className="px-4 py-3">Estado</th>
@@ -55,6 +59,7 @@ export default async function AdminProductsPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-stone-500">{p.categories?.name ?? "—"}</td>
+                  <td className="px-4 py-3 text-stone-500">{p.subcategory?.name ?? "—"}</td>
                   <td className="px-4 py-3">{formatPrice(Number(p.price))}</td>
                   <td className="px-4 py-3">
                     <span className={stock === 0 ? "font-semibold text-red-600" : ""}>{stock}</span>
@@ -63,9 +68,12 @@ export default async function AdminProductsPage() {
                     <ToggleActiveButton productId={p.id} active={p.active} />
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link href={`/admin/productos/${p.id}`} className="text-accent hover:underline">
-                      Editar
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link href={`/admin/productos/${p.id}`} className="text-accent hover:underline">
+                        Editar
+                      </Link>
+                      <DeleteProductButton productId={p.id} productName={p.name} />
+                    </div>
                   </td>
                 </tr>
               );

@@ -41,7 +41,7 @@ export function SiteFooter() {
             {categoryLinks.map((c) => (
               <li key={c.slug}>
                 <Link
-                  href={`/?categoria=${c.slug}#catalogo`}
+                  href={`/?subcategoria=${c.slug}#catalogo`}
                   className="transition-colors hover:text-gold"
                 >
                   {c.label}
@@ -72,8 +72,6 @@ export function SiteFooter() {
           </h3>
           <p className="mt-4 text-sm leading-relaxed">
             Pedidos y consultas por WhatsApp.
-            <br />
-            Envíos a todo el país.
           </p>
           {whatsapp && (
             <a

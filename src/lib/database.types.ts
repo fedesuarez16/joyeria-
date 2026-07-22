@@ -46,6 +46,7 @@ export type Database = {
           name: string
           position: number
           slug: string
+          type: string
         }
         Insert: {
           created_at?: string
@@ -53,6 +54,7 @@ export type Database = {
           name: string
           position?: number
           slug: string
+          type?: string
         }
         Update: {
           created_at?: string
@@ -60,6 +62,7 @@ export type Database = {
           name?: string
           position?: number
           slug?: string
+          type?: string
         }
         Relationships: []
       }
@@ -293,6 +296,7 @@ export type Database = {
           price: number
           slug: string
           stock: number
+          subcategory_id: string | null
           updated_at: string
         }
         Insert: {
@@ -306,6 +310,7 @@ export type Database = {
           price: number
           slug: string
           stock?: number
+          subcategory_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -319,12 +324,20 @@ export type Database = {
           price?: number
           slug?: string
           stock?: number
+          subcategory_id?: string | null
           updated_at?: string
         }
         Relationships: [
           {
             foreignKeyName: "products_category_id_fkey"
             columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_subcategory_id_fkey"
+            columns: ["subcategory_id"]
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]

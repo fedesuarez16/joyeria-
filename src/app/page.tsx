@@ -11,27 +11,40 @@ import { Reveal } from "@/components/reveal";
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; categoria?: string }>;
+  searchParams: Promise<{ q?: string; categoria?: string; subcategoria?: string }>;
 }) {
-  const { q, categoria } = await searchParams;
+  const { q, categoria, subcategoria } = await searchParams;
   let [categories, products]: [Category[], ProductWithRelations[]] = await Promise.all([
     getCategories(),
-    getProducts({ q, categorySlug: categoria }),
+    getProducts({ q, categorySlug: categoria, subcategorySlug: subcategoria }),
   ]);
 
   // Sin productos en la base → catálogo de ejemplo para que la tienda no se vea vacía.
   let isDemo = false;
   if (products.length === 0) {
-    const all = q || categoria ? await getProducts() : products;
+    const all = q || categoria || subcategoria ? await getProducts() : products;
     if (all.length === 0) {
       isDemo = true;
       products = demoProducts.filter(
         (p) =>
           (!categoria || p.categories?.slug === categoria) &&
+          (!subcategoria || p.subcategory?.slug === subcategoria) &&
           (!q || p.name.toLowerCase().includes(q.toLowerCase())),
       );
       if (categories.length === 0) categories = demoCategories;
     }
+  }
+
+  const categoryOptions = categories.filter((c) => c.type === "categoria");
+  const subcategoryOptions = categories.filter((c) => c.type === "subcategoria");
+
+  function pillHref(next: { categoria?: string; subcategoria?: string }) {
+    const params = new URLSearchParams();
+    if (next.categoria) params.set("categoria", next.categoria);
+    if (next.subcategoria) params.set("subcategoria", next.subcategoria);
+    if (q) params.set("q", q);
+    const qs = params.toString();
+    return `/${qs ? `?${qs}` : ""}#catalogo`;
   }
 
   return (
@@ -54,13 +67,33 @@ export default async function CatalogPage({
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
-          <CategoryPill href="/#catalogo" label="Todas" active={!categoria} />
-          {categories.map((c) => (
+          <CategoryPill
+            href={pillHref({ subcategoria })}
+            label="Todas las categorías"
+            active={!categoria}
+          />
+          {categoryOptions.map((c) => (
             <CategoryPill
               key={c.id}
-              href={`/?categoria=${c.slug}${q ? `&q=${encodeURIComponent(q)}` : ""}#catalogo`}
+              href={pillHref({ categoria: c.slug, subcategoria })}
               label={c.name}
               active={categoria === c.slug}
+            />
+          ))}
+        </div>
+
+        <div className="mt-2 flex flex-wrap gap-2">
+          <CategoryPill
+            href={pillHref({ categoria })}
+            label="Todas las subcategorías"
+            active={!subcategoria}
+          />
+          {subcategoryOptions.map((c) => (
+            <CategoryPill
+              key={c.id}
+              href={pillHref({ categoria, subcategoria: c.slug })}
+              label={c.name}
+              active={subcategoria === c.slug}
             />
           ))}
         </div>

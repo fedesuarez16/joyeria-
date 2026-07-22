@@ -35,6 +35,7 @@ export function ProductForm({
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [categoryId, setCategoryId] = useState(product?.category_id ?? "");
+  const [subcategoryId, setSubcategoryId] = useState(product?.subcategory_id ?? "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [stock, setStock] = useState(product ? String(product.stock) : "0");
   const [threshold, setThreshold] = useState(
@@ -68,6 +69,7 @@ export function ProductForm({
         slug: product?.slug ?? slugify(name),
         description,
         category_id: categoryId || null,
+        subcategory_id: subcategoryId || null,
         price: Number(price),
         stock: Number(stock),
         low_stock_threshold: Number(threshold),
@@ -151,6 +153,9 @@ export function ProductForm({
   const inputCls =
     "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-accent";
 
+  const categoryOptions = categories.filter((c) => c.type === "categoria");
+  const subcategoryOptions = categories.filter((c) => c.type === "subcategoria");
+
   return (
     <form onSubmit={onSubmit} className="max-w-2xl space-y-5">
       <div>
@@ -173,13 +178,31 @@ export function ProductForm({
           <label className="mb-1 block text-sm font-medium">Categoría</label>
           <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={inputCls}>
             <option value="">Sin categoría</option>
-            {categories.map((c) => (
+            {categoryOptions.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>
             ))}
           </select>
         </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">Subcategoría</label>
+          <select
+            value={subcategoryId}
+            onChange={(e) => setSubcategoryId(e.target.value)}
+            className={inputCls}
+          >
+            <option value="">Sin subcategoría</option>
+            {subcategoryOptions.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="mb-1 block text-sm font-medium">Precio (ARS)</label>
           <input
@@ -192,9 +215,6 @@ export function ProductForm({
             className={inputCls}
           />
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="mb-1 block text-sm font-medium">
             Stock {variants.length > 0 && <span className="text-stone-400">(sin variantes)</span>}
@@ -208,16 +228,17 @@ export function ProductForm({
             className={`${inputCls} disabled:bg-stone-100`}
           />
         </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Alerta de stock bajo (≤)</label>
-          <input
-            type="number"
-            min="0"
-            value={threshold}
-            onChange={(e) => setThreshold(e.target.value)}
-            className={inputCls}
-          />
-        </div>
+      </div>
+
+      <div className="max-w-[calc(50%-0.5rem)]">
+        <label className="mb-1 block text-sm font-medium">Alerta de stock bajo (≤)</label>
+        <input
+          type="number"
+          min="0"
+          value={threshold}
+          onChange={(e) => setThreshold(e.target.value)}
+          className={inputCls}
+        />
       </div>
 
       <fieldset className="rounded-xl border border-stone-200 p-4">

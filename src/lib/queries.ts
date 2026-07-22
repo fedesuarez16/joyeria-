@@ -8,9 +8,13 @@ export type ProductImage = Database["public"]["Tables"]["product_images"]["Row"]
 
 export type ProductWithRelations = Product & {
   categories: Category | null;
+  subcategory: Category | null;
   product_images: ProductImage[];
   product_variants: Variant[];
 };
+
+const PRODUCT_SELECT =
+  "*, categories:categories!products_category_id_fkey(*), subcategory:categories!products_subcategory_id_fkey(*), product_images(*), product_variants(*)";
 
 export async function getCategories() {
   const supabase = await createClient();
@@ -21,11 +25,13 @@ export async function getCategories() {
   return data ?? [];
 }
 
-export async function getProducts(opts: { q?: string; categorySlug?: string } = {}) {
+export async function getProducts(
+  opts: { q?: string; categorySlug?: string; subcategorySlug?: string } = {}
+) {
   const supabase = await createClient();
   let query = supabase
     .from("products")
-    .select("*, categories(*), product_images(*), product_variants(*)")
+    .select(PRODUCT_SELECT)
     .eq("active", true)
     .order("created_at", { ascending: false });
 
@@ -39,6 +45,9 @@ export async function getProducts(opts: { q?: string; categorySlug?: string } = 
   if (opts.categorySlug) {
     products = products.filter((p) => p.categories?.slug === opts.categorySlug);
   }
+  if (opts.subcategorySlug) {
+    products = products.filter((p) => p.subcategory?.slug === opts.subcategorySlug);
+  }
 
   return products;
 }
@@ -47,7 +56,7 @@ export async function getProductBySlug(slug: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("*, categories(*), product_images(*), product_variants(*)")
+    .select(PRODUCT_SELECT)
     .eq("slug", slug)
     .eq("active", true)
     .single();

@@ -23,13 +23,6 @@ export function QuoteBand() {
 
 const promises = [
   {
-    title: "Envío a todo el país",
-    text: "Preparamos cada pedido con cuidado y te lo enviamos estés donde estés.",
-    icon: (
-      <path d="M3 7h11v8H3zM14 10h4l3 3v2h-7zM7 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-    ),
-  },
-  {
     title: "Materiales que cuidan tu piel",
     text: "Acero quirúrgico, plata 925 y baños de oro hipoalergénicos, pensados para el uso diario.",
     icon: <path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6l7-3zM9.5 12l2 2 3.5-4" />,
@@ -43,7 +36,7 @@ const promises = [
   },
 ];
 
-/** Tres promesas de la marca en cards con filete dorado. */
+/** Promesas de la marca en cards con filete dorado. */
 export function BrandPromises() {
   return (
     <section className="bg-neutral-100 px-4 py-14 sm:py-16">
@@ -56,7 +49,7 @@ export function BrandPromises() {
             Pensado para <span className="italic text-accent">vos</span>
           </h2>
         </Reveal>
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 sm:max-w-2xl sm:mx-auto">
           {promises.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.12}>
               <div className="h-full rounded-xl border-t-2 border-gold bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">

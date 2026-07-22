@@ -12,7 +12,7 @@ export default async function PricesPage() {
         Los precios de variantes con precio propio también se actualizan.
       </p>
       <div className="mt-5 rounded-xl border border-stone-200 bg-white p-5">
-        <BulkPriceForm categories={categories} />
+        <BulkPriceForm categories={categories.filter((c) => c.type === "categoria")} />
       </div>
     </div>
   );
