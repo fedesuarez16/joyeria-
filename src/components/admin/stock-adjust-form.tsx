@@ -1,14 +1,89 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 type ProductOption = {
   id: string;
   name: string;
+  code: number | null;
   product_variants: { id: string; name: string }[];
 };
+
+function productLabel(p: ProductOption) {
+  return p.code != null ? `${p.code} · ${p.name}` : p.name;
+}
+
+function ProductCombobox({
+  products,
+  productId,
+  onChange,
+}: {
+  products: ProductOption[];
+  productId: string;
+  onChange: (id: string) => void;
+}) {
+  const selected = products.find((p) => p.id === productId);
+  const [query, setQuery] = useState(selected ? productLabel(selected) : "");
+  const [open, setOpen] = useState(false);
+  const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter(
+      (p) => p.name.toLowerCase().includes(q) || String(p.code ?? "").includes(q)
+    );
+  }, [products, query]);
+
+  function select(p: ProductOption) {
+    onChange(p.id);
+    setQuery(productLabel(p));
+    setOpen(false);
+  }
+
+  return (
+    <div className="relative">
+      <input
+        type="text"
+        required
+        value={query}
+        onFocus={() => setOpen(true)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setOpen(true);
+          if (productId) onChange("");
+        }}
+        onBlur={() => {
+          blurTimeout.current = setTimeout(() => setOpen(false), 150);
+        }}
+        placeholder="Buscar por código o nombre…"
+        className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-accent"
+      />
+      {open && results.length > 0 && (
+        <ul
+          onMouseDown={(e) => {
+            e.preventDefault();
+            if (blurTimeout.current) clearTimeout(blurTimeout.current);
+          }}
+          className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-stone-200 bg-white shadow-lg"
+        >
+          {results.map((p) => (
+            <li
+              key={p.id}
+              onClick={() => select(p)}
+              className="cursor-pointer px-3 py-2 text-sm hover:bg-stone-50"
+            >
+              <span className="font-medium text-stone-700">{p.code ?? "—"}</span>
+              <span className="text-stone-500"> · {p.name}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export function StockAdjustForm({ products }: { products: ProductOption[] }) {
   const router = useRouter();
@@ -30,7 +105,11 @@ export function StockAdjustForm({ products }: { products: ProductOption[] }) {
     setMessage(null);
 
     const qty = Number(quantity);
-    if (!productId || !qty) return;
+    if (!productId) {
+      setMessage({ ok: false, text: "Elegí un producto de la lista" });
+      return;
+    }
+    if (!qty) return;
     if (selected && selected.product_variants.length > 0 && !variantId) {
       setMessage({ ok: false, text: "Elegí una variante" });
       return;
@@ -65,22 +144,14 @@ export function StockAdjustForm({ products }: { products: ProductOption[] }) {
     <form onSubmit={onSubmit} className="flex flex-wrap items-end gap-3">
       <div className="flex min-w-52 flex-1 flex-col gap-1">
         <label className="text-xs text-stone-500">Producto</label>
-        <select
-          required
-          value={productId}
-          onChange={(e) => {
-            setProductId(e.target.value);
+        <ProductCombobox
+          products={products}
+          productId={productId}
+          onChange={(id) => {
+            setProductId(id);
             setVariantId("");
           }}
-          className={inputCls}
-        >
-          <option value="">Elegir…</option>
-          {products.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+        />
       </div>
 
       {selected && selected.product_variants.length > 0 && (

@@ -41,6 +41,8 @@ export type Database = {
     Tables: {
       categories: {
         Row: {
+          code_end: number | null
+          code_start: number | null
           created_at: string
           id: string
           name: string
@@ -49,6 +51,8 @@ export type Database = {
           type: string
         }
         Insert: {
+          code_end?: number | null
+          code_start?: number | null
           created_at?: string
           id?: string
           name: string
@@ -57,6 +61,8 @@ export type Database = {
           type?: string
         }
         Update: {
+          code_end?: number | null
+          code_start?: number | null
           created_at?: string
           id?: string
           name?: string
@@ -288,6 +294,7 @@ export type Database = {
         Row: {
           active: boolean
           category_id: string | null
+          code: number | null
           created_at: string
           description: string
           id: string
@@ -302,6 +309,7 @@ export type Database = {
         Insert: {
           active?: boolean
           category_id?: string | null
+          code?: number | null
           created_at?: string
           description?: string
           id?: string
@@ -316,6 +324,7 @@ export type Database = {
         Update: {
           active?: boolean
           category_id?: string | null
+          code?: number | null
           created_at?: string
           description?: string
           id?: string

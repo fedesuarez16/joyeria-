@@ -14,7 +14,10 @@ export default async function AdminDashboard() {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(5),
-      supabase.from("orders").select("*", { count: "exact", head: true }),
+      supabase
+        .from("orders")
+        .select("*", { count: "exact", head: true })
+        .neq("status", "cancelled"),
     ]);
 
   const variantsByProduct = new Map<string, { name: string; stock: number }[]>();

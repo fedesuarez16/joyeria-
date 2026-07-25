@@ -19,7 +19,7 @@ export default async function InventoryPage() {
       .limit(100),
     supabase
       .from("products")
-      .select("id, name, product_variants(id, name)")
+      .select("id, name, code, product_variants(id, name)")
       .order("name"),
   ]);
 

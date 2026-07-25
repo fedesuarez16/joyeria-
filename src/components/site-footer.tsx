@@ -15,9 +15,9 @@ const navLinks = [
   { label: "Crear cuenta", href: "/registro" },
 ];
 
-export function SiteFooter() {
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+const WHATSAPP_NUMBER = "5492995927196";
 
+export function SiteFooter() {
   return (
     <footer className="bg-ink text-neutral-400">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -73,16 +73,14 @@ export function SiteFooter() {
           <p className="mt-4 text-sm leading-relaxed">
             Pedidos y consultas por WhatsApp.
           </p>
-          {whatsapp && (
-            <a
-              href={`https://wa.me/${whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-block rounded-full border border-gold/60 px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-ink"
-            >
-              Escribinos
-            </a>
-          )}
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block rounded-full border border-gold/60 px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-ink"
+          >
+            Escribinos
+          </a>
         </div>
       </div>
 

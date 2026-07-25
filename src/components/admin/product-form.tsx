@@ -36,6 +36,7 @@ export function ProductForm({
   const [description, setDescription] = useState(product?.description ?? "");
   const [categoryId, setCategoryId] = useState(product?.category_id ?? "");
   const [subcategoryId, setSubcategoryId] = useState(product?.subcategory_id ?? "");
+  const [code, setCode] = useState(product?.code != null ? String(product.code) : "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [stock, setStock] = useState(product ? String(product.stock) : "0");
   const [threshold, setThreshold] = useState(
@@ -70,6 +71,7 @@ export function ProductForm({
         description,
         category_id: categoryId || null,
         subcategory_id: subcategoryId || null,
+        code: code === "" ? null : Number(code),
         price: Number(price),
         stock: Number(stock),
         low_stock_threshold: Number(threshold),
@@ -156,6 +158,15 @@ export function ProductForm({
   const categoryOptions = categories.filter((c) => c.type === "categoria");
   const subcategoryOptions = categories.filter((c) => c.type === "subcategoria");
 
+  const selectedCategory = categoryOptions.find((c) => c.id === categoryId);
+  const codeNum = code === "" ? null : Number(code);
+  const codeOutOfRange =
+    codeNum != null &&
+    selectedCategory != null &&
+    selectedCategory.code_start != null &&
+    selectedCategory.code_end != null &&
+    (codeNum < selectedCategory.code_start || codeNum > selectedCategory.code_end);
+
   return (
     <form onSubmit={onSubmit} className="max-w-2xl space-y-5">
       <div>
@@ -200,6 +211,22 @@ export function ProductForm({
             ))}
           </select>
         </div>
+      </div>
+
+      <div className="max-w-[calc(50%-0.5rem)]">
+        <label className="mb-1 block text-sm font-medium">Código</label>
+        <input
+          type="number"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          className={inputCls}
+        />
+        {codeOutOfRange && (
+          <p className="mt-1 text-xs text-amber-600">
+            Ese código está fuera del rango de {selectedCategory!.name} ({selectedCategory!.code_start}
+            –{selectedCategory!.code_end}). Se puede guardar igual.
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
