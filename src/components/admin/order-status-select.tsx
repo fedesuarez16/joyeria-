@@ -18,8 +18,16 @@ export function OrderStatusSelect({ orderId, status }: { orderId: string; status
   async function onChange(next: string) {
     setSaving(true);
     const supabase = createClient();
-    await supabase.from("orders").update({ status: next }).eq("id", orderId);
+    // Cancelar repone stock: se hace en la DB de forma atómica vía RPC.
+    const { error } =
+      next === "cancelled"
+        ? await supabase.rpc("cancel_order", { p_order_id: orderId })
+        : await supabase.from("orders").update({ status: next }).eq("id", orderId);
     setSaving(false);
+    if (error) {
+      alert(`No se pudo actualizar el pedido: ${error.message}`);
+      return;
+    }
     router.refresh();
   }
 

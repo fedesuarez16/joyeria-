@@ -34,6 +34,6 @@ export function buildWhatsAppUrl(items: CartItem[], order: OrderSummary): string
     lines.push(`A nombre de: ${order.customerName}`);
   }
 
-  const phone = "5492995927196";
+  const phone = "5492994222931";
   return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join("\n"))}`;
 }

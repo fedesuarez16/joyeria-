@@ -14,7 +14,7 @@ function category(
   position: number,
   type: "categoria" | "subcategoria"
 ): Category {
-  return { id, name, slug, position, type, code_start: null, code_end: null, created_at: now };
+  return { id, name, slug, position, type, created_at: now };
 }
 
 export const demoCategories: Category[] = [

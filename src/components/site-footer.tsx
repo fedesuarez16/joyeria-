@@ -15,7 +15,7 @@ const navLinks = [
   { label: "Crear cuenta", href: "/registro" },
 ];
 
-const WHATSAPP_NUMBER = "5492995927196";
+const WHATSAPP_NUMBER = "5492994222931";
 
 export function SiteFooter() {
   return (

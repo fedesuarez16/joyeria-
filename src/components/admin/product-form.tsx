@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Category, ProductWithRelations } from "@/lib/queries";
+import type { Category, CategoryCodeRange, ProductWithRelations } from "@/lib/queries";
 
 type VariantDraft = {
   id?: string;
@@ -24,9 +24,11 @@ function slugify(text: string): string {
 
 export function ProductForm({
   categories,
+  ranges,
   product,
 }: {
   categories: Category[];
+  ranges: CategoryCodeRange[];
   product: ProductWithRelations | null;
 }) {
   const router = useRouter();
@@ -159,13 +161,17 @@ export function ProductForm({
   const subcategoryOptions = categories.filter((c) => c.type === "subcategoria");
 
   const selectedCategory = categoryOptions.find((c) => c.id === categoryId);
+  const selectedSubcategory = subcategoryOptions.find((c) => c.id === subcategoryId);
+  const selectedRange = ranges.find(
+    (r) => r.category_id === categoryId && r.subcategory_id === subcategoryId
+  );
   const codeNum = code === "" ? null : Number(code);
   const codeOutOfRange =
     codeNum != null &&
-    selectedCategory != null &&
-    selectedCategory.code_start != null &&
-    selectedCategory.code_end != null &&
-    (codeNum < selectedCategory.code_start || codeNum > selectedCategory.code_end);
+    selectedRange != null &&
+    selectedRange.code_start != null &&
+    selectedRange.code_end != null &&
+    (codeNum < selectedRange.code_start || codeNum > selectedRange.code_end);
 
   return (
     <form onSubmit={onSubmit} className="max-w-2xl space-y-5">
@@ -223,8 +229,9 @@ export function ProductForm({
         />
         {codeOutOfRange && (
           <p className="mt-1 text-xs text-amber-600">
-            Ese código está fuera del rango de {selectedCategory!.name} ({selectedCategory!.code_start}
-            –{selectedCategory!.code_end}). Se puede guardar igual.
+            Ese código está fuera del rango de {selectedCategory!.name} →{" "}
+            {selectedSubcategory!.name} ({selectedRange!.code_start}–{selectedRange!.code_end}).
+            Se puede guardar igual.
           </p>
         )}
       </div>

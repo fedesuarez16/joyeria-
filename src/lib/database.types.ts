@@ -41,8 +41,6 @@ export type Database = {
     Tables: {
       categories: {
         Row: {
-          code_end: number | null
-          code_start: number | null
           created_at: string
           id: string
           name: string
@@ -51,8 +49,6 @@ export type Database = {
           type: string
         }
         Insert: {
-          code_end?: number | null
-          code_start?: number | null
           created_at?: string
           id?: string
           name: string
@@ -61,8 +57,6 @@ export type Database = {
           type?: string
         }
         Update: {
-          code_end?: number | null
-          code_start?: number | null
           created_at?: string
           id?: string
           name?: string
@@ -71,6 +65,48 @@ export type Database = {
           type?: string
         }
         Relationships: []
+      }
+      category_code_ranges: {
+        Row: {
+          category_id: string
+          code_end: number | null
+          code_start: number | null
+          created_at: string
+          id: string
+          subcategory_id: string
+        }
+        Insert: {
+          category_id: string
+          code_end?: number | null
+          code_start?: number | null
+          created_at?: string
+          id?: string
+          subcategory_id: string
+        }
+        Update: {
+          category_id?: string
+          code_end?: number | null
+          code_start?: number | null
+          created_at?: string
+          id?: string
+          subcategory_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_code_ranges_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_code_ranges_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       coupons: {
         Row: {
@@ -450,6 +486,10 @@ export type Database = {
       bulk_update_prices: {
         Args: { p_category_id?: string; p_percent: number }
         Returns: number
+      }
+      cancel_order: {
+        Args: { p_order_id: string }
+        Returns: undefined
       }
       create_order: {
         Args: {

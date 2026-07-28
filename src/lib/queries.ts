@@ -5,6 +5,8 @@ export type Product = Database["public"]["Tables"]["products"]["Row"];
 export type Category = Database["public"]["Tables"]["categories"]["Row"];
 export type Variant = Database["public"]["Tables"]["product_variants"]["Row"];
 export type ProductImage = Database["public"]["Tables"]["product_images"]["Row"];
+export type CategoryCodeRange =
+  Database["public"]["Tables"]["category_code_ranges"]["Row"];
 
 export type ProductWithRelations = Product & {
   categories: Category | null;
@@ -22,6 +24,12 @@ export async function getCategories() {
     .from("categories")
     .select("*")
     .order("position");
+  return data ?? [];
+}
+
+export async function getCategoryCodeRanges() {
+  const supabase = await createClient();
+  const { data } = await supabase.from("category_code_ranges").select("*");
   return data ?? [];
 }
 

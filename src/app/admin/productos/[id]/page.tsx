@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getCategories, type ProductWithRelations } from "@/lib/queries";
+import {
+  getCategories,
+  getCategoryCodeRanges,
+  type ProductWithRelations,
+} from "@/lib/queries";
 import { ProductForm } from "@/components/admin/product-form";
 
 export default async function EditProductPage({
@@ -10,8 +14,9 @@ export default async function EditProductPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const [categories, { data: product }] = await Promise.all([
+  const [categories, ranges, { data: product }] = await Promise.all([
     getCategories(),
+    getCategoryCodeRanges(),
     supabase
       .from("products")
       .select(
@@ -26,7 +31,11 @@ export default async function EditProductPage({
   return (
     <div>
       <h1 className="mb-5 text-xl font-semibold">Editar producto</h1>
-      <ProductForm categories={categories} product={product as ProductWithRelations} />
+      <ProductForm
+        categories={categories}
+        ranges={ranges}
+        product={product as ProductWithRelations}
+      />
     </div>
   );
 }
