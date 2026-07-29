@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product-card";
 import { SearchBar } from "@/components/search-bar";
 import { QuoteBand, BrandPromises, JoinClub } from "@/components/home-sections";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { GoldMarquee } from "@/components/gold-marquee";
 import { Reveal } from "@/components/reveal";
 
 export default async function CatalogPage({
@@ -50,17 +51,19 @@ export default async function CatalogPage({
   return (
     <>
       <HeroCarousel />
+      <GoldMarquee />
 
       <section id="catalogo" className="mx-auto w-full max-w-6xl scroll-mt-20 px-4 py-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+          <Reveal>
             <p className="font-sans text-xs uppercase tracking-[0.35em] text-accent">
               Nuestra colección
             </p>
             <h2 className="mt-2 font-display text-4xl font-medium">
               El <span className="italic text-accent">catálogo</span>
             </h2>
-          </div>
+            <div className="gold-shimmer mt-3 h-px w-20" aria-hidden />
+          </Reveal>
           <Suspense>
             <SearchBar />
           </Suspense>

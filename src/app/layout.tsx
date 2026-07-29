@@ -52,6 +52,8 @@ export default function RootLayout({
               <CartBadge />
             </nav>
           </div>
+          {/* Progreso de lectura ligado al scroll (CSS puro, sin JS) */}
+          <div className="scroll-progress absolute inset-x-0 -bottom-px h-0.5" aria-hidden />
         </header>
         <main className="flex-1">{children}</main>
         <SiteFooter />

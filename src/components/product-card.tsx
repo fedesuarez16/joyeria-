@@ -27,6 +27,11 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             💍
           </div>
         )}
+        {/* Destello dorado que barre la pieza al hacer hover */}
+        <span
+          className="card-shine pointer-events-none absolute inset-0 z-10"
+          aria-hidden
+        />
         {outOfStock && (
           <span className="absolute left-2 top-2 rounded-full bg-stone-800/90 px-2.5 py-1 text-xs font-medium text-white">
             Agotado

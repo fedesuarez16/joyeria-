@@ -5,8 +5,8 @@ import { Reveal } from "@/components/reveal";
 /** Banda de cita sobre fondo negro, separa el catálogo del resto del home. */
 export function QuoteBand() {
   return (
-    <section className="bg-ink px-4 py-16 text-center text-white sm:py-20">
-      <Reveal>
+    <section className="gold-aura relative isolate overflow-hidden bg-ink px-4 py-16 text-center text-white sm:py-20">
+      <Reveal className="relative">
         <p className="mx-auto max-w-2xl font-display text-3xl font-medium leading-snug sm:text-4xl">
           Hay piezas que se compran
           <br />
@@ -81,8 +81,8 @@ export function BrandPromises() {
 /** CTA de registro: imagen a la izquierda, texto a la derecha, sobre negro. */
 export function JoinClub() {
   return (
-    <section className="bg-ink text-white">
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-14 sm:py-20 md:grid-cols-2">
+    <section className="gold-aura relative isolate overflow-hidden bg-ink text-white">
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-14 sm:py-20 md:grid-cols-2">
         <Reveal className="order-last mx-auto w-full max-w-md md:order-first">
           <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gold/20">
             <Image
