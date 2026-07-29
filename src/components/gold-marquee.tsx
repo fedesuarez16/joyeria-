@@ -1,5 +1,4 @@
 const items = [
-  "Envíos a todo el país",
   "Plata 925 · Acero quirúrgico",
   "10% off en tu primera compra",
   "Atención personalizada por WhatsApp",

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const SLIDE_MS = 6000;
+const SLIDE_MS = 3000;
 
 const slides = [
   {
@@ -51,18 +51,14 @@ const slides = [
 
 export function HeroCarousel() {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Avanza siempre: no se pausa por hover, focus ni click en los indicadores.
   useEffect(() => {
-    if (paused) return;
-    timer.current = setInterval(() => {
+    const id = setInterval(() => {
       setActive((i) => (i + 1) % slides.length);
     }, SLIDE_MS);
-    return () => {
-      if (timer.current) clearInterval(timer.current);
-    };
-  }, [paused]);
+    return () => clearInterval(id);
+  }, []);
 
   const goTo = useCallback((i: number) => {
     setActive(i);
@@ -71,10 +67,6 @@ export function HeroCarousel() {
   return (
     <section
       className="relative h-[75vh] min-h-[520px] w-full overflow-hidden bg-ink text-white"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
       aria-roledescription="carrusel"
     >
       {slides.map((s, i) => (
