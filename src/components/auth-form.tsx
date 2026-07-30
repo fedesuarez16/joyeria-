@@ -12,7 +12,8 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // /auth/callback redirige acá con ?error=... cuando falla la confirmación.
+  const [error, setError] = useState<string | null>(searchParams.get("error"));
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
@@ -41,7 +42,9 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       return;
     }
 
-    router.push(searchParams.get("next") ?? "/");
+    // Solo rutas internas: un `next` absoluto sería un open redirect.
+    const next = searchParams.get("next");
+    router.push(next?.startsWith("/") && !next.startsWith("//") ? next : "/");
     router.refresh();
   }
 

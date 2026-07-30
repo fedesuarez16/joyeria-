@@ -3,7 +3,11 @@
   Authentication → Email Templates → Confirm signup
 
   Pegar este HTML completo en el campo "Message body" (reemplaza el default).
-  Variable usada: {{ .ConfirmationURL }} (la provee Supabase automáticamente).
+
+  Usa {{ .TokenHash }} en vez de {{ .ConfirmationURL }} a propósito: el link
+  entra por nuestra ruta /auth/callback, que valida con verifyOtp del lado del
+  servidor. Así funciona aunque el usuario abra el mail en otro navegador o en
+  el celular — el flujo PKCE fallaría ahí porque le falta la cookie del verifier.
   El logo se sirve desde https://mainajoyas.com/logo-mark.png — necesita ser
   una URL pública y absoluta, los mails no pueden leer rutas locales.
 -->
@@ -26,13 +30,13 @@
     </tr>
     <tr>
       <td style="padding:0 36px 36px;text-align:center;">
-        <a href="{{ .ConfirmationURL }}"
+        <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=signup"
            style="display:inline-block;background-color:#d4af37;color:#0a0a0a;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:14px 36px;border-radius:6px;">
           Confirmar mi cuenta
         </a>
         <p style="margin:24px 0 0;font-size:12px;color:#9a9a9a;font-family:Helvetica,Arial,sans-serif;">
           Si el botón no funciona, copiá y pegá este link en tu navegador:<br />
-          <a href="{{ .ConfirmationURL }}" style="color:#a07c2c;word-break:break-all;">{{ .ConfirmationURL }}</a>
+          <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=signup" style="color:#a07c2c;word-break:break-all;">{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&amp;type=signup</a>
         </p>
       </td>
     </tr>
