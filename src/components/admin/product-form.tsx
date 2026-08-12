@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { compressImage, extensionFor } from "@/lib/image";
 import type { Category, CategoryCodeRange, ProductWithRelations } from "@/lib/queries";
 
 type VariantDraft = {
@@ -123,11 +124,16 @@ export function ProductForm({
       // imágenes nuevas
       let position = images.length;
       for (const file of newFiles) {
-        const ext = file.name.split(".").pop() ?? "jpg";
-        const path = `${productId}/${crypto.randomUUID()}.${ext}`;
+        const optimized = await compressImage(file);
+        const path = `${productId}/${crypto.randomUUID()}.${extensionFor(optimized)}`;
         const { error: uploadError } = await supabase.storage
           .from("product-images")
-          .upload(path, file);
+          .upload(path, optimized, {
+            contentType: optimized.type,
+            // El nombre es un UUID, así que el archivo nunca cambia: se puede
+            // cachear en el CDN de forma indefinida.
+            cacheControl: "31536000",
+          });
         if (uploadError) throw uploadError;
 
         const {
