@@ -100,6 +100,17 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         </button>
       </div>
 
+      {mode === "login" && (
+        <p className="text-right">
+          <Link
+            href="/recuperar"
+            className="text-sm text-stone-500 hover:text-accent hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
+      )}
+
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
