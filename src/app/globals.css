@@ -153,30 +153,6 @@ body {
   opacity: 0.65;
 }
 
-/* Destello diagonal que recorre la foto al hacer hover: la pieza "brilla" */
-@keyframes shine-sweep {
-  from {
-    transform: translateX(-130%) skewX(-12deg);
-  }
-  to {
-    transform: translateX(130%) skewX(-12deg);
-  }
-}
-
-.card-shine {
-  transform: translateX(-130%) skewX(-12deg);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, #fff 55%, transparent),
-    color-mix(in srgb, #f5e6b3 75%, transparent),
-    transparent
-  );
-}
-.group:hover .card-shine {
-  animation: shine-sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 /* Halo dorado que deriva lento sobre las secciones negras */
 @keyframes aura-drift {
   from {
@@ -225,13 +201,9 @@ body {
   .hero-copy-active .hero-line,
   .gold-shimmer,
   .marquee-track,
-  .group:hover .card-shine,
   .gold-aura::before,
   .scroll-progress {
     animation: none;
-  }
-  .card-shine {
-    display: none;
   }
   .hero-line {
     opacity: 1;
