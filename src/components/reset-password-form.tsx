@@ -20,8 +20,9 @@ export function ResetPasswordForm() {
 
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      // El callback valida el token y recién ahí manda a elegir la contraseña nueva.
-      redirectTo: `${window.location.origin}/auth/callback?next=/nueva-contrasena`,
+      // Sin query string a propósito: la allowlist de Supabase se lleva mal con
+      // `?`. /auth/recuperar valida el token y manda a elegir la contraseña.
+      redirectTo: `${window.location.origin}/auth/recuperar`,
     });
 
     setLoading(false);
